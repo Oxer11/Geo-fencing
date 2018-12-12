@@ -10,9 +10,37 @@
 #include<cmath>
 #include<vector>
 #include<unordered_map>
+#include<stack>
 #define MAX_POS 5000000
+#define eps 1e-8
 
 using namespace std;
+
+/*pair相加*/
+template<class Ty1,class Ty2>
+inline const pair<Ty1,Ty2> operator+(const pair<Ty1, Ty2>&p1, const pair<Ty1, Ty2>&p2)
+{
+    pair<Ty1, Ty2> ret;
+    ret.first = p1.first + p2.first;
+    ret.second = p1.second + p2.second;
+    return ret;
+}
+/*pair相减*/
+template<class Ty1, class Ty2>
+inline const pair<Ty1, Ty2> operator-(const pair<Ty1, Ty2>&p1, const pair<Ty1, Ty2>&p2)
+{
+    pair<Ty1, Ty2> ret;
+    ret.first = p1.first - p2.first;
+    ret.second = p1.second - p2.second;
+    return ret;
+}
+
+/*pair点乘*/
+template<class Ty1, class Ty2>
+inline const double operator*(const pair<Ty1, Ty2>&p1, const pair<Ty1, Ty2>&p2)
+{
+    return p1.first*p2.first + p1.second*p2.second;
+}
 
 struct Triangle
 {
