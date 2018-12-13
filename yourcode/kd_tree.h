@@ -1,20 +1,11 @@
 #ifndef GUARD_kd_tree
 #define GUARD_kd_tree
 
-#include "all.h"
-#define N 1000010
-#define alpha 0.5
+#include "Others.h"
+#include "Triangle.h"
+#define alpha 0.75
 
-int cur;
-int n,m,x,y,cnt;
-
-struct Point
-{
-    double d[2];
-    Point(){};
-    Point(double x,double y) {d[0]=x,d[1]=y;}
-    bool operator < (const Point &n1) const {return d[cur]<n1.d[cur];}
-}p[N];
+using namespace std;
 
 struct Node
 {
@@ -44,16 +35,16 @@ struct Node
             mn[i] = mx[i] = d[i];
             if (lch != NULL)
             {
-                mn[i] = min(mn[i], lch->mn[i]);
-                mx[i] = max(mx[i], lch->mx[i]);
+                if (lch->mn[i] < mn[i]) mn[i] = lch->mn[i];
+                if (lch->mx[i] > mx[i]) mx[i] = lch->mx[i];
             }
             if (rch != NULL)
             {
-                mn[i] = min(mn[i], rch->mn[i]);
-                mx[i] = max(mx[i], rch->mx[i]);
+                if (rch->mn[i] < mn[i]) mn[i] = rch->mn[i];
+                if (rch->mx[i] > mx[i]) mx[i] = rch->mx[i];
             }
         }
-        size = 1;
+        size = !is_erase;
         if (lch != NULL) size += lch->size;
         if (rch != NULL) size += rch->size;
     }
@@ -112,6 +103,7 @@ struct kdtree
 
     void Rebuild(Node *node, int dim)
     {
+    	cnt=0;
         DFS(node);
         node = Build(1, cnt, dim);
     }
@@ -180,7 +172,6 @@ struct kdtree
         else puts("KD-Tree Operation Error!");
         if (rebuild_node != NULL) Rebuild(rebuild_node, rebuild_dim);
     }
-
-}
+};
 
 #endif

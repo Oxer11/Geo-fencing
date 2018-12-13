@@ -6,9 +6,9 @@ void SetEnvironmentFromMixQuery() {
 }
 
 void AddPointFromMixQuery(int id, double x, double y) {
-    Rect R = Rect(x, y, x, y);
-    RPoint[id] = make_pair(x, y);
-    Rtree_point.Insert(R.min, R.max, id);
+    //Rect R = Rect(x, y, x, y);
+    //RPoint[id] = make_pair(x, y);
+    //Rtree_point.Insert(R.min, R.max, id);
 }
 
 void DeletePointFromMixQuery(int id) {

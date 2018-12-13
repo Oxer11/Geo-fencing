@@ -5,6 +5,11 @@
 #ifndef PJ_OTHERS_H
 #define PJ_OTHERS_H
 
+#include<unordered_map>
+#include<vector>
+
+using namespace std;
+
 struct Rect {
     Rect()  {}
 
@@ -22,5 +27,23 @@ struct Rect {
     double max[2];
 };
 
+extern int cur;
+
+struct Point
+{
+    double d[2];
+    Point(){};
+    Point(double x,double y) {d[0]=x,d[1]=y;}
+    bool operator < (const Point &n1) const {return d[cur]<n1.d[cur];}
+};
+
+extern unordered_map<int, int> ans_id;
+extern unordered_map<int, Rect> RPoly;
+extern unordered_map<int, vector<pair<double, double>>> Poly;
+extern vector<int> ansid, ans;
+extern unordered_map<int, pair<double, double>> RPoint;
+
+extern int n,m,cnt;
+extern Point p[1000010];
 
 #endif //PJ_OTHERS_H
