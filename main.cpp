@@ -222,7 +222,9 @@ int main() {
     }
 
     int user_operation(0);
+    int cnt = 0;
     while (fin >> user_operation) {
+        cnt++;if (cnt % 1000 == 0) std::cout<<cnt<<std::endl;
         switch (user_operation) {
             case 1: {
                 // Add Point

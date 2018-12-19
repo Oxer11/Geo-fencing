@@ -32,8 +32,9 @@ extern int cur;
 struct Point
 {
     double d[2];
+    int id;
     Point(){};
-    Point(double x,double y) {d[0]=x,d[1]=y;}
+    Point(int t, double x, double y) {id=t,d[0]=x,d[1]=y;}
     bool operator < (const Point &n1) const {return d[cur]<n1.d[cur];}
 };
 

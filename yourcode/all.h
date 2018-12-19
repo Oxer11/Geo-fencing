@@ -19,6 +19,7 @@ using namespace std;
 extern RTree<int, double, 2, double> Rtree_point;
 extern RTree<int, double, 2, double> Rtree;
 extern kdtree KDtree;
+extern TPPLPartition pp;
 
 bool MySearchCallback(int id);
 

@@ -2,19 +2,20 @@
 #include "all.h"
 
 void SetEnvironmentFromMixQuery() {
-
+    KDtree.Init();
 }
 
 void AddPointFromMixQuery(int id, double x, double y) {
-    //Rect R = Rect(x, y, x, y);
-    //RPoint[id] = make_pair(x, y);
-    //Rtree_point.Insert(R.min, R.max, id);
+    KDtree.T = Point(id, x, y);
+    KDtree.Solve(0);
+    RPoint[id] = make_pair(x, y);
 }
 
 void DeletePointFromMixQuery(int id) {
     pair<double, double> now = RPoint[id];
-    Rect R = Rect(now.first, now.second, now.first, now.second);
-    Rtree_point.Remove(R.min, R.max, id);
+    KDtree.T = Point(id, now.first, now.second);
+    KDtree.erase_id = id;
+    KDtree.Solve(1);
     RPoint.erase(id);
 }
 
@@ -52,24 +53,36 @@ void DeletePolygonFromMixQuery(int id) {
 }
 
 std::vector<int> QueryPolygonFromMixQuery(int n, std::vector<std::pair<double, double>> &polygon) {
-    ansid.clear();
+    ans_id.clear();
     ans.clear();
-    double mnx = MAX_POS, mny = MAX_POS, mxx = -MAX_POS, mxy = -MAX_POS;
-    for (auto now : polygon)
+    list<TPPLPoly> polys, results;
+    TPPLPoly poly;
+    poly.Init(n);
+    for (int i=0;i<n;i++)
     {
-        if (now.first < mnx) mnx = now.first;
-        if (now.second < mny) mny = now.second;
-        if (now.first > mxx) mxx = now.first;
-        if (now.second > mxy) mxy = now.second;
+        poly[i].x = polygon[i].first;
+        poly[i].y = polygon[i].second;
     }
-    Rect search_rect(mnx, mny, mxx, mxy);
-    Rtree_point.Search(search_rect.min, search_rect.max, MySearchCallback);
-    for (auto nowid : ansid)
+    polys.push_back(poly);
+    if (!pp.Triangulate_MONO(&polys, &results))
+        puts("Error in Triangulation!");
+    //printf("%d\n", results.size());
+    for (auto it : results)
     {
-        pair<double, double> now = RPoint[nowid];
-        if (rayCasting(now.first, now.second, polygon))
-            ans.push_back(nowid);
+        Triangle tri;
+        tri.a = make_pair(it[0].x, it[0].y);
+        tri.b = make_pair(it[1].x, it[1].y);
+        tri.c = make_pair(it[2].x, it[2].y);
+        //puts("!");
+        //printf("%.3lf %.3lf\n", tri.a.first, tri.a.second);
+        //printf("%.3lf %.3lf\n", tri.b.first, tri.b.second);
+        //printf("%.3lf %.3lf\n", tri.c.first, tri.c.second);
+        //puts("!");
+        KDtree.tri = tri;
+        KDtree.Solve(2);
     }
+    for (auto id : ans_id)
+        ans.push_back(id.first);
     return ans;
 }
 

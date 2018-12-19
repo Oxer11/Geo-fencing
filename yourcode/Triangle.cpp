@@ -20,9 +20,9 @@ bool PointOnSegment(double x, double y, pair<double, double> P1, pair<double, do
 
 bool PointInTriangle(double x, double y, Triangle tri)
 {
-    if (tri.is_bound_a && PointOnSegment(x, y, tri.a, tri.b)) return false;
-    if (tri.is_bound_b && PointOnSegment(x, y, tri.b, tri.c)) return false;
-    if (tri.is_bound_c && PointOnSegment(x, y, tri.c, tri.a)) return false;
+    //if (tri.is_bound_a && PointOnSegment(x, y, tri.a, tri.b)) return false;
+    //if (tri.is_bound_b && PointOnSegment(x, y, tri.b, tri.c)) return false;
+    //if (tri.is_bound_c && PointOnSegment(x, y, tri.c, tri.a)) return false;
 
     pair<double, double> v0 = tri.c - tri.a;
     pair<double, double> v1 = tri.b - tri.a;
@@ -60,9 +60,9 @@ bool IntersectRectTri(double mnx, double mny, double mxx, double mxy, Triangle t
     if (tri.a.first>=mnx && tri.a.first<=mxx && tri.a.second>=mny && tri.a.second<=mxy)
         return true;
     if (tri.b.first>=mnx && tri.b.first<=mxx && tri.b.second>=mny && tri.b.second<=mxy)
-        return false;
+        return true;
     if (tri.c.first>=mnx && tri.c.first<=mxx && tri.c.second>=mny && tri.c.second<=mxy)
-        return false;
+        return true;
     return PointInTriangle(mnx, mny, tri)
            || PointInTriangle(mnx, mxy, tri)
            || PointInTriangle(mxx, mny, tri)

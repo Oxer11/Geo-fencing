@@ -1563,6 +1563,7 @@ int TPPLPartition::Triangulate_MONO(TPPLPolyList *inpolys, TPPLPolyList *triangl
 	for(iter = monotone.begin(); iter!=monotone.end();iter++) {
 		if(!TriangulateMonotone(&(*iter),triangles)) return 0;
 	}
+
 	return 1;
 }
 

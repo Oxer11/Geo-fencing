@@ -41,7 +41,7 @@ inline const double operator*(const pair<Ty1, Ty2>&p1, const pair<Ty1, Ty2>&p2)
 struct Triangle
 {
     pair<double, double> a, b, c;
-    bool is_bound_a, is_bound_b, is_bound_c;
+    //bool is_bound_a, is_bound_b, is_bound_c;
 };
 
 bool PointOnSegment(double x, double y, pair<double, double> P1, pair<double, double> P2);

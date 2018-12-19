@@ -18,6 +18,7 @@ struct Node
     {
         d[0] = mn[0] = mx[0] = n1.d[0];
         d[1] = mn[1] = mx[1] = n1.d[1];
+        id = n1.id;
         return *this;
     }
 
@@ -26,6 +27,8 @@ struct Node
         lch = rch = NULL;
         id = is_erase = 0;
         size = 1;
+        d[0] = mn[0] = mx[0] = 0;
+        d[1] = mn[1] = mx[1] = 0;
     }
 
     void pushup()
@@ -52,7 +55,7 @@ struct Node
 
 struct kdtree
 {
-    vector<Node> pool;
+    //vector<Node> pool;
     stack<Node*> st;
     Node *root, *rebuild_node;
     Point T;
@@ -62,15 +65,21 @@ struct kdtree
     Node *NewNode()
     {
         Node *ans;
-        if (st.empty()) pool.push_back(Node()), ans = &(*pool.end());
+        if (st.empty())
+        {
+            Node* TT = new Node;
+            //pool.push_back(*TT);
+            //ans = &(*pool.rbegin());
+            ans = TT;
+        }
         else ans = st.top(), st.pop();
         return ans;
     }
 
-    bool NeedRebuild(Node *node)
+    bool NeedRebuild(Node *(&node))
     {
-        if (node->lch != NULL && node->lch->size > alpha*node->size + 5) return true;
-        if (node->rch != NULL && node->rch->size > alpha*node->size + 5) return true;
+        if (node->lch != NULL && node->lch->size > alpha*(node->size) + 5) return true;
+        if (node->rch != NULL && node->rch->size > alpha*(node->size) + 5) return true;
         return false;
     }
 
@@ -87,12 +96,12 @@ struct kdtree
         return ret;
     }
 
-    void DFS(Node *node)
+    void DFS(Node *(&node))
     {
         if (node == NULL) return;
         DFS(node->lch);
         DFS(node->rch);
-        if (!node->is_erase) p[++cnt] = Point(node->d[0], node->d[1]);
+        if (!node->is_erase) p[++cnt] = Point(node->id, node->d[0], node->d[1]);
         node->is_erase = node->id = node->size = 0;
         node->lch = node->rch = NULL;
         node->d[0] = node->d[1] = 0;
@@ -101,7 +110,7 @@ struct kdtree
         st.push(node);
     }
 
-    void Rebuild(Node *node, int dim)
+    void Rebuild(Node *(&node), int dim)
     {
     	cnt=0;
         DFS(node);
@@ -110,15 +119,16 @@ struct kdtree
 
     void Init() {root = NULL;}
 
-    void PushbackAll(Node *node)
+    void PushbackAll(Node *(&node))
     {
-        if (!node->is_erase) ans_id[node->id] = 1;
+        if (!node->is_erase) ans_id[node -> id] = 1;
         if (node->lch != NULL) PushbackAll(node->lch);
         if (node->rch != NULL) PushbackAll(node->rch);
     }
 
-    void Query(Node *node)
+    void Query(Node *(&node))
     {
+        if (node == NULL) return;
         if (RectInTriangle(node->mn[0], node->mn[1], node->mx[0], node->mx[1], tri))
         {
             PushbackAll(node);
@@ -127,12 +137,12 @@ struct kdtree
         if (!IntersectRectTri(node->mn[0], node->mn[1], node->mx[0], node->mx[1], tri))
             return;
         if (!node->is_erase && PointInTriangle(node->d[0], node->d[1], tri))
-            ansid.push_back(node -> id);
+            ans_id[node -> id] = 1;
         if (node->lch != NULL) Query(node->lch);
         if (node->rch != NULL) Query(node->rch);
     }
 
-    void Insert(Node *node, int dim)
+    void Insert(Node *(&node), int dim)
     {
         if (node == NULL)
         {
@@ -148,7 +158,7 @@ struct kdtree
         if (NeedRebuild(node)) rebuild_node = node, rebuild_dim = dim;
     }
 
-    void Erase(Node *node, int dim)
+    void Erase(Node *(&node), int dim)
     {
         if (node->id == erase_id)
         {
@@ -169,6 +179,7 @@ struct kdtree
         rebuild_node = NULL;
         if (op == 0) Insert(root, 0);
         else if (op == 1) Erase(root, 0);
+        else if (op == 2) Query(root);
         else puts("KD-Tree Operation Error!");
         if (rebuild_node != NULL) Rebuild(rebuild_node, rebuild_dim);
     }
