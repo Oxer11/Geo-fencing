@@ -3,7 +3,7 @@
 
 #include "Others.h"
 #include "Triangle.h"
-#define alpha 0.75
+#define alpha 0.9
 
 using namespace std;
 
@@ -157,12 +157,12 @@ struct kdtree
         else
             Insert(node->rch, dim^1);
         node -> pushup();
-        //if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
+        if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
     }
 
     void Erase(Node *(&node), int dim)
     {
-        if (node == NULL) puts("Error in Erase!");
+        if (node == NULL) {return;puts("Error in Erase!");}
         if (node->id == erase_id)
         {
             node->is_erase = 1;
@@ -173,7 +173,7 @@ struct kdtree
         else
             Erase(node->rch, dim^1);
         node -> pushup();
-        //if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
+        if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
     }
 
     void Solve(int op)
