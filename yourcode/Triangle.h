@@ -46,6 +46,9 @@ struct Triangle
 
 bool PointOnSegment(double x, double y, pair<double, double> P1, pair<double, double> P2);
 
+//https://www.cnblogs.com/wuwangchuxin0924/p/6218494.html
+bool IntersectSegments(pair<double, double> a, pair<double, double> b, pair<double, double> c, pair<double, double> d);
+
 //http://www.cnblogs.com/graphics/archive/2010/08/05/1793393.html
 bool PointInTriangle(double x, double y, Triangle tri);
 

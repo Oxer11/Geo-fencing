@@ -62,6 +62,7 @@ std::vector<int> QueryPolygonFromMixQuery(int n, std::vector<std::pair<double, d
     {
         poly[i].x = polygon[i].first;
         poly[i].y = polygon[i].second;
+        //printf("%.3lf %.3lf\n", poly[i].x, poly[i].y);
     }
     polys.push_back(poly);
     if (!pp.Triangulate_MONO(&polys, &results))
@@ -78,6 +79,7 @@ std::vector<int> QueryPolygonFromMixQuery(int n, std::vector<std::pair<double, d
     }
     for (auto id : ans_id)
         ans.push_back(id.first);
+    //sort(ans.begin(), ans.end());
     return ans;
 }
 

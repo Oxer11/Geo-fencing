@@ -79,8 +79,8 @@ struct kdtree
 
     bool NeedRebuild(Node *(&node))
     {
-        if (node->lch != NULL && node->lch->size > alpha*(node->size)) return true;
-        if (node->rch != NULL && node->rch->size > alpha*(node->size)) return true;
+        if (node->lch != NULL && node->lch->size > alpha*(node->size) + 5) return true;
+        if (node->rch != NULL && node->rch->size > alpha*(node->size) + 5) return true;
         return false;
     }
 
@@ -157,7 +157,7 @@ struct kdtree
         else
             Insert(node->rch, dim^1);
         node -> pushup();
-        if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
+        //if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
     }
 
     void Erase(Node *(&node), int dim)
@@ -173,7 +173,7 @@ struct kdtree
         else
             Erase(node->rch, dim^1);
         node -> pushup();
-        if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
+        //if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
     }
 
     void Solve(int op)
