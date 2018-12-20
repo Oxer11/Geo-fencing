@@ -12,4 +12,4 @@ unordered_map<int, pair<double, double>> RPoint;
 
 int cur;
 int n,m,cnt;
-Point p[1000010];
+Point p[20000010];

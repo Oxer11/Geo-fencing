@@ -7,6 +7,7 @@
 
 #include<unordered_map>
 #include<vector>
+#include<cmath>
 
 using namespace std;
 
@@ -35,7 +36,11 @@ struct Point
     int id;
     Point(){};
     Point(int t, double x, double y) {id=t,d[0]=x,d[1]=y;}
-    bool operator < (const Point &n1) const {return d[cur]<n1.d[cur];}
+    bool operator < (const Point &n1) const
+    {
+        return d[cur]<n1.d[cur]
+            || (fabs(d[cur]-n1.d[cur])<1e-8 && d[cur^1]<n1.d[cur^1]);
+    }
 };
 
 extern unordered_map<int, int> ans_id;
@@ -45,6 +50,6 @@ extern vector<int> ansid, ans;
 extern unordered_map<int, pair<double, double>> RPoint;
 
 extern int n,m,cnt;
-extern Point p[1000010];
+extern Point p[20000010];
 
 #endif //PJ_OTHERS_H

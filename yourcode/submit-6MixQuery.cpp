@@ -73,11 +73,6 @@ std::vector<int> QueryPolygonFromMixQuery(int n, std::vector<std::pair<double, d
         tri.a = make_pair(it[0].x, it[0].y);
         tri.b = make_pair(it[1].x, it[1].y);
         tri.c = make_pair(it[2].x, it[2].y);
-        //puts("!");
-        //printf("%.3lf %.3lf\n", tri.a.first, tri.a.second);
-        //printf("%.3lf %.3lf\n", tri.b.first, tri.b.second);
-        //printf("%.3lf %.3lf\n", tri.c.first, tri.c.second);
-        //puts("!");
         KDtree.tri = tri;
         KDtree.Solve(2);
     }

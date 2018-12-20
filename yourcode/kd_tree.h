@@ -47,7 +47,7 @@ struct Node
                 if (rch->mx[i] > mx[i]) mx[i] = rch->mx[i];
             }
         }
-        size = !is_erase;
+        size = 1;
         if (lch != NULL) size += lch->size;
         if (rch != NULL) size += rch->size;
     }
@@ -57,7 +57,8 @@ struct kdtree
 {
     //vector<Node> pool;
     stack<Node*> st;
-    Node *root, *rebuild_node;
+    Node *root;
+    Node **rebuild_node;
     Point T;
     Triangle tri;
     int erase_id, rebuild_dim;
@@ -78,8 +79,8 @@ struct kdtree
 
     bool NeedRebuild(Node *(&node))
     {
-        if (node->lch != NULL && node->lch->size > alpha*(node->size) + 5) return true;
-        if (node->rch != NULL && node->rch->size > alpha*(node->size) + 5) return true;
+        if (node->lch != NULL && node->lch->size > alpha*(node->size)) return true;
+        if (node->rch != NULL && node->rch->size > alpha*(node->size)) return true;
         return false;
     }
 
@@ -101,7 +102,8 @@ struct kdtree
         if (node == NULL) return;
         DFS(node->lch);
         DFS(node->rch);
-        if (!node->is_erase) p[++cnt] = Point(node->id, node->d[0], node->d[1]);
+        if (!node->is_erase)
+            p[++cnt] = Point(node->id, node->d[0], node->d[1]);
         node->is_erase = node->id = node->size = 0;
         node->lch = node->rch = NULL;
         node->d[0] = node->d[1] = 0;
@@ -150,28 +152,28 @@ struct kdtree
             *node = T;
             return;
         }
-        if (T.d[dim] < node->d[dim])
+        if (T.d[dim] < node->d[dim] || (fabs(T.d[dim] - node->d[dim])<1e-8 && T.d[dim^1] < node->d[dim^1]))
             Insert(node->lch, dim^1);
         else
             Insert(node->rch, dim^1);
         node -> pushup();
-        if (NeedRebuild(node)) rebuild_node = node, rebuild_dim = dim;
+        if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
     }
 
     void Erase(Node *(&node), int dim)
     {
+        if (node == NULL) puts("Error in Erase!");
         if (node->id == erase_id)
         {
             node->is_erase = 1;
-            node->size--;
             return;
         }
-        if (T.d[dim] < node->d[dim])
+        if (T.d[dim] < node->d[dim] || (fabs(T.d[dim] - node->d[dim])<1e-8 && T.d[dim^1] < node->d[dim^1]))
             Erase(node->lch, dim^1);
         else
             Erase(node->rch, dim^1);
         node -> pushup();
-        if (NeedRebuild(node)) rebuild_node = node, rebuild_dim = dim;
+        if (NeedRebuild(node)) rebuild_node = &node, rebuild_dim = dim;
     }
 
     void Solve(int op)
@@ -181,7 +183,7 @@ struct kdtree
         else if (op == 1) Erase(root, 0);
         else if (op == 2) Query(root);
         else puts("KD-Tree Operation Error!");
-        if (rebuild_node != NULL) Rebuild(rebuild_node, rebuild_dim);
+        if (rebuild_node != NULL) Rebuild(*rebuild_node, rebuild_dim);
     }
 };
 
