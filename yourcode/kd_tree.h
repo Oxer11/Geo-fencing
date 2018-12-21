@@ -3,7 +3,7 @@
 
 #include "Others.h"
 #include "Triangle.h"
-#define alpha 0.9
+#define alpha 0.75
 
 using namespace std;
 
@@ -61,6 +61,7 @@ struct kdtree
     Node **rebuild_node;
     Point T;
     Triangle tri;
+    Rect rectangle;
     int erase_id, rebuild_dim;
 
     Node *NewNode()
@@ -137,6 +138,7 @@ struct kdtree
             return;
         }
         if (!IntersectRectTri(node->mn[0], node->mn[1], node->mx[0], node->mx[1], tri))
+        //if (!IntersectRect(Rect(node->mn[0], node->mn[1], node->mx[0], node->mx[1]), rectangle))
             return;
         if (!node->is_erase && PointInTriangle(node->d[0], node->d[1], tri))
             ans_id[node -> id] = 1;

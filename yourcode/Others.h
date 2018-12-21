@@ -52,4 +52,6 @@ extern unordered_map<int, pair<double, double>> RPoint;
 extern int n,m,cnt;
 extern Point p[20000010];
 
+bool IntersectRect(Rect a, Rect b);
+
 #endif //PJ_OTHERS_H

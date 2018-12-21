@@ -23,6 +23,8 @@ extern TPPLPartition pp;
 
 bool MySearchCallback(int id);
 
+bool MySearchCallbackTri(int id);
+
 bool rayCasting(double px, double py, vector<pair<double, double>> &polygon);
 
 #endif //PJ_ALL_H

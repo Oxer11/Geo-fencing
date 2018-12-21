@@ -4,6 +4,8 @@
 
 #include "Triangle.h"
 
+Triangle TRI;
+
 bool PointOnSegment(double x, double y, pair<double, double> P1, pair<double, double> P2)
 {
     pair<double, double> seg = P2 - P1;

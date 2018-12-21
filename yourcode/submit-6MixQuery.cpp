@@ -75,11 +75,15 @@ std::vector<int> QueryPolygonFromMixQuery(int n, std::vector<std::pair<double, d
         tri.b = make_pair(it[1].x, it[1].y);
         tri.c = make_pair(it[2].x, it[2].y);
         KDtree.tri = tri;
+        KDtree.rectangle.min[0] = min(tri.a.first, min(tri.b.first, tri.c.first));
+        KDtree.rectangle.min[1] = min(tri.a.second, min(tri.b.second, tri.c.second));
+        KDtree.rectangle.max[0] = max(tri.a.first, max(tri.b.first, tri.c.first));
+        KDtree.rectangle.max[1] = max(tri.a.second, max(tri.b.second, tri.c.second));
         KDtree.Solve(2);
     }
     for (auto id : ans_id)
         ans.push_back(id.first);
-    //sort(ans.begin(), ans.end());
+    sort(ans.begin(), ans.end());
     return ans;
 }
 

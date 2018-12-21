@@ -15,6 +15,14 @@ bool MySearchCallback(int id)
     return true; // keep going
 }
 
+bool MySearchCallbackTri(int id)
+{
+    pair<double, double> x = RPoint[id];
+    if (PointInTriangle(x.first, x.second, TRI))
+      ans_id[id] = 1;
+    return true; // keep going
+}
+
 bool rayCasting(double px, double py, vector<pair<double, double>> &polygon)
 {
     bool flag = false;

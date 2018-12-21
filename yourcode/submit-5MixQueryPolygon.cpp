@@ -24,22 +24,34 @@ void DeletePointFromMixQueryPolygon(int id) {
 
 std::vector<int> QueryPolygonFromMixQueryPolygon(int n, std::vector<std::pair<double, double> > &polygon) {
 
-    ansid.clear();
+    ans_id.clear();
     ans.clear();
-    double mnx = MAX_POS, mny = MAX_POS, mxx = -MAX_POS, mxy = -MAX_POS;
-    for (auto now : polygon)
+    list<TPPLPoly> polys, results;
+    TPPLPoly poly;
+    poly.Init(n);
+    for (int i=0;i<n;i++)
     {
-        if (now.first < mnx) mnx = now.first;
-        if (now.second < mny) mny = now.second;
-        if (now.first > mxx) mxx = now.first;
-        if (now.second > mxy) mxy = now.second;
+        poly[i].x = polygon[i].first;
+        poly[i].y = polygon[i].second;
     }
-    Rect search_rect(mnx, mny, mxx, mxy);
-    Rtree_point.Search(search_rect.min, search_rect.max, MySearchCallback);
-    for (auto nowid : ansid)
+    polys.push_back(poly);
+    if (!pp.Triangulate_MONO(&polys, &results))
+        puts("Error in Triangulation!");
+    for (auto now : results)
     {
-        pair<double, double> now = RPoint[nowid];
-        if (rayCasting(now.first, now.second, polygon))
-            ans.push_back(nowid);
+        double mnx = MAX_POS, mny = MAX_POS, mxx = -MAX_POS, mxy = -MAX_POS;
+        mnx = min(now[0].x, min(now[1].x, now[2].x));
+        mny = min(now[0].y, min(now[1].y, now[2].y));
+        mxx = max(now[0].x, max(now[1].x, now[2].x));
+        mxy = max(now[0].y, max(now[1].y, now[2].y));
+        TRI.a = make_pair(now[0].x, now[0].y);
+        TRI.b = make_pair(now[1].x, now[1].y);
+        TRI.c = make_pair(now[2].x, now[2].y);
+        Rect search_rect(mnx, mny, mxx, mxy);
+        Rtree_point.Search(search_rect.min, search_rect.max, MySearchCallbackTri);
     }
-    return ans;}
+    for (auto id : ans_id)
+        ans.push_back(id.first);
+    sort(ans.begin(), ans.end());
+    return ans;
+}

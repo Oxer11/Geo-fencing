@@ -191,7 +191,7 @@ int main() {
     std::fstream fout("test.out", std::fstream::out);
 
     fin >> environment_variable;
-
+    //environment_variable = 5;
     switch (environment_variable) {
         case 1: {
             SetEnvironmentFromAddPolygonBeforeQueryPoint();

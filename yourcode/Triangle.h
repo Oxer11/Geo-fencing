@@ -44,6 +44,8 @@ struct Triangle
     //bool is_bound_a, is_bound_b, is_bound_c;
 };
 
+extern Triangle TRI;
+
 bool PointOnSegment(double x, double y, pair<double, double> P1, pair<double, double> P2);
 
 //https://www.cnblogs.com/wuwangchuxin0924/p/6218494.html
