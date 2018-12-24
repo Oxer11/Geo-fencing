@@ -129,7 +129,7 @@ struct kdtree
         if (node->rch != NULL) PushbackAll(node->rch);
     }
 
-    void Query(Node *(&node))
+    void QueryTri(Node *(&node))
     {
         if (node == NULL) return;
         if (RectInTriangle(node->mn[0], node->mn[1], node->mx[0], node->mx[1], tri))
@@ -138,12 +138,24 @@ struct kdtree
             return;
         }
         if (!IntersectRectTri(node->mn[0], node->mn[1], node->mx[0], node->mx[1], tri))
-        //if (!IntersectRect(Rect(node->mn[0], node->mn[1], node->mx[0], node->mx[1]), rectangle))
             return;
         if (!node->is_erase && PointInTriangle(node->d[0], node->d[1], tri))
             ans_id[node -> id] = 1;
-        if (node->lch != NULL) Query(node->lch);
-        if (node->rch != NULL) Query(node->rch);
+        if (node->lch != NULL) QueryTri(node->lch);
+        if (node->rch != NULL) QueryTri(node->rch);
+    }
+
+    void QueryRect(Node *(&node))
+    {
+        if (node == NULL) return;
+        if (!IntersectRect(node->mn[0], node->mn[1], node->mx[0], node->mx[1], rectangle))
+            return;
+        if (!node->is_erase
+            && rectangle.min[0]<=node->d[0] && node->d[0]<=rectangle.max[0]
+            && rectangle.min[1]<=node->d[1] && node->d[1]<=rectangle.max[1])
+            ans_id[node -> id] = 1;
+        if (node->lch != NULL) QueryRect(node->lch);
+        if (node->rch != NULL) QueryRect(node->rch);
     }
 
     void Insert(Node *(&node), int dim)
@@ -183,7 +195,8 @@ struct kdtree
         rebuild_node = NULL;
         if (op == 0) Insert(root, 0);
         else if (op == 1) Erase(root, 0);
-        else if (op == 2) Query(root);
+        else if (op == 2) QueryTri(root);
+        else if (op == 3) QueryRect(root);
         else puts("KD-Tree Operation Error!");
         if (rebuild_node != NULL) Rebuild(*rebuild_node, rebuild_dim);
     }

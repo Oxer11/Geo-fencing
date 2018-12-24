@@ -55,34 +55,53 @@ void DeletePolygonFromMixQuery(int id) {
 std::vector<int> QueryPolygonFromMixQuery(int n, std::vector<std::pair<double, double>> &polygon) {
     ans_id.clear();
     ans.clear();
-    list<TPPLPoly> polys, results;
-    TPPLPoly poly;
-    poly.Init(n);
-    for (int i=0;i<n;i++)
+    if (n>=1000)
     {
-        poly[i].x = polygon[i].first;
-        poly[i].y = polygon[i].second;
-        //printf("%.3lf %.3lf\n", poly[i].x, poly[i].y);
+        list<TPPLPoly> polys, results;
+        TPPLPoly poly;
+        poly.Init(n);
+        for (int i=0;i<n;i++)
+        {
+            poly[i].x = polygon[i].first;
+            poly[i].y = polygon[i].second;
+        }
+        polys.push_back(poly);
+        if (!pp.Triangulate_MONO(&polys, &results))
+            puts("Error in Triangulation!");
+        for (auto it : results)
+        {
+            Triangle tri;
+            tri.a = make_pair(it[0].x, it[0].y);
+            tri.b = make_pair(it[1].x, it[1].y);
+            tri.c = make_pair(it[2].x, it[2].y);
+            KDtree.tri = tri;
+            KDtree.Solve(2);
+        }
+        for (auto id : ans_id)
+            ans.push_back(id.first);
     }
-    polys.push_back(poly);
-    if (!pp.Triangulate_MONO(&polys, &results))
-        puts("Error in Triangulation!");
-    //printf("%d\n", results.size());
-    for (auto it : results)
+    else
     {
-        Triangle tri;
-        tri.a = make_pair(it[0].x, it[0].y);
-        tri.b = make_pair(it[1].x, it[1].y);
-        tri.c = make_pair(it[2].x, it[2].y);
-        KDtree.tri = tri;
-        KDtree.rectangle.min[0] = min(tri.a.first, min(tri.b.first, tri.c.first));
-        KDtree.rectangle.min[1] = min(tri.a.second, min(tri.b.second, tri.c.second));
-        KDtree.rectangle.max[0] = max(tri.a.first, max(tri.b.first, tri.c.first));
-        KDtree.rectangle.max[1] = max(tri.a.second, max(tri.b.second, tri.c.second));
-        KDtree.Solve(2);
+        double mnx = MAX_POS, mny = MAX_POS, mxx = -MAX_POS, mxy = -MAX_POS;
+        for (auto now : polygon)
+        {
+            if (now.first < mnx) mnx = now.first;
+            if (now.second < mny) mny = now.second;
+            if (now.first > mxx) mxx = now.first;
+            if (now.second > mxy) mxy = now.second;
+        }
+        KDtree.rectangle.min[0] = mnx;
+        KDtree.rectangle.min[1] = mny;
+        KDtree.rectangle.max[0] = mxx;
+        KDtree.rectangle.max[1] = mxy;
+        KDtree.Solve(3);
+        for (auto nowid : ans_id)
+        {
+            pair<double, double> now = RPoint[nowid.first];
+            if (rayCasting(now.first, now.second, polygon))
+                ans.push_back(nowid.first);
+        }
     }
-    for (auto id : ans_id)
-        ans.push_back(id.first);
     sort(ans.begin(), ans.end());
     return ans;
 }
