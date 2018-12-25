@@ -8,6 +8,7 @@ RTree<int, double, 2, double> Rtree_point;
 RTree<int, double, 2, double> Rtree;
 kdtree KDtree;
 TPPLPartition pp;
+quadtrees Qtree;
 
 bool MySearchCallback(int id)
 {

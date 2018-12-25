@@ -55,8 +55,15 @@ void DeletePolygonFromMixQuery(int id) {
 std::vector<int> QueryPolygonFromMixQuery(int n, std::vector<std::pair<double, double>> &polygon) {
     ans_id.clear();
     ans.clear();
-    if (n>=1000)
+    if (n>=0)
     {
+        double s = -0.5*(polygon[0].second+polygon[n-1].second)*(polygon[0].first-polygon[n-1].first);
+        for (int i=0;i<n-1;i++)
+            s += -0.5*(polygon[i+1].second+polygon[i].second)*(polygon[i+1].first-polygon[i].first);
+        if (s<0.0)
+        {
+            for (int i=0;i<n/2;i++) swap(polygon[i], polygon[n-i-1]);
+        }
         list<TPPLPoly> polys, results;
         TPPLPoly poly;
         poly.Init(n);
@@ -66,8 +73,8 @@ std::vector<int> QueryPolygonFromMixQuery(int n, std::vector<std::pair<double, d
             poly[i].y = polygon[i].second;
         }
         polys.push_back(poly);
-        if (!pp.Triangulate_MONO(&polys, &results))
-            puts("Error in Triangulation!");
+        if (!pp.Triangulate_EC(&poly, &results))
+            printf("Error in Triangulation! cnt:%d area:%.3lf\n", n, s);
         for (auto it : results)
         {
             Triangle tri;
@@ -102,7 +109,6 @@ std::vector<int> QueryPolygonFromMixQuery(int n, std::vector<std::pair<double, d
                 ans.push_back(nowid.first);
         }
     }
-    sort(ans.begin(), ans.end());
     return ans;
 }
 

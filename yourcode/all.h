@@ -8,11 +8,11 @@
 #include "RTree.h"
 #include "polypartition.h"
 #include "kd_tree.h"
+#include "quadtrees.h"
 #include<cmath>
 #include<vector>
 #include<unordered_map>
 #include<stack>
-#define MAX_POS 5000000
 
 using namespace std;
 
@@ -20,6 +20,7 @@ extern RTree<int, double, 2, double> Rtree_point;
 extern RTree<int, double, 2, double> Rtree;
 extern kdtree KDtree;
 extern TPPLPartition pp;
+extern quadtrees Qtree;
 
 bool MySearchCallback(int id);
 

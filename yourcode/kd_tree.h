@@ -9,7 +9,7 @@ using namespace std;
 
 struct Node
 {
-    double d[2], mn[2], mx[2];
+    float d[2], mn[2], mx[2];
     int id, size;
     bool is_erase;
     Node *lch, *rch;
@@ -35,7 +35,8 @@ struct Node
     {
         for (int i=0;i<2;i++)
         {
-            mn[i] = mx[i] = d[i];
+            if (!is_erase) mn[i] = mx[i] = d[i];
+            else mn[i] = MAX_POS, mx[i] = -MAX_POS;
             if (lch != NULL)
             {
                 if (lch->mn[i] < mn[i]) mn[i] = lch->mn[i];
@@ -47,7 +48,7 @@ struct Node
                 if (rch->mx[i] > mx[i]) mx[i] = rch->mx[i];
             }
         }
-        size = 1;
+        size = !is_erase;
         if (lch != NULL) size += lch->size;
         if (rch != NULL) size += rch->size;
     }
@@ -55,28 +56,12 @@ struct Node
 
 struct kdtree
 {
-    //vector<Node> pool;
-    stack<Node*> st;
     Node *root;
     Node **rebuild_node;
     Point T;
     Triangle tri;
     Rect rectangle;
     int erase_id, rebuild_dim;
-
-    Node *NewNode()
-    {
-        Node *ans;
-        if (st.empty())
-        {
-            Node* TT = new Node;
-            //pool.push_back(*TT);
-            //ans = &(*pool.rbegin());
-            ans = TT;
-        }
-        else ans = st.top(), st.pop();
-        return ans;
-    }
 
     bool NeedRebuild(Node *(&node))
     {
@@ -90,7 +75,7 @@ struct kdtree
         cur = dim;
         int mid = (l+r)>>1;
         nth_element(p+l, p+mid, p+r+1);
-        Node *ret = NewNode();
+        Node *ret = new Node;
         *ret = p[mid];
         if (l<mid) ret->lch = Build(l,mid-1,dim^1);
         if (r>mid) ret->rch = Build(mid+1,r,dim^1);
@@ -105,12 +90,6 @@ struct kdtree
         DFS(node->rch);
         if (!node->is_erase)
             p[++cnt] = Point(node->id, node->d[0], node->d[1]);
-        node->is_erase = node->id = node->size = 0;
-        node->lch = node->rch = NULL;
-        node->d[0] = node->d[1] = 0;
-        node->mn[0] = node->mn[1] = 0;
-        node->mx[0] = node->mx[1] = 0;
-        st.push(node);
     }
 
     void Rebuild(Node *(&node), int dim)
@@ -162,7 +141,7 @@ struct kdtree
     {
         if (node == NULL)
         {
-            node = NewNode();
+            node = new Node;
             *node = T;
             return;
         }
@@ -176,10 +155,11 @@ struct kdtree
 
     void Erase(Node *(&node), int dim)
     {
-        if (node == NULL) {return;puts("Error in Erase!");}
+        if (node == NULL) return;
         if (node->id == erase_id)
         {
             node->is_erase = 1;
+            node->pushup();
             return;
         }
         if (T.d[dim] < node->d[dim] || (fabs(T.d[dim] - node->d[dim])<1e-8 && T.d[dim^1] < node->d[dim^1]))

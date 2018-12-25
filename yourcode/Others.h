@@ -8,6 +8,7 @@
 #include<unordered_map>
 #include<vector>
 #include<cmath>
+#define MAX_POS 5000000
 
 using namespace std;
 
