@@ -3,10 +3,20 @@ project(main)
 
 set(CMAKE_CXX_STANDARD 14)
 
+SET(CMAKE_BUILD_TYPE "Release")
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O2 -Wall")
+
 include_directories(yourcode)
 
 add_executable(main
+        yourcode/all.cpp
+        yourcode/all.h
         yourcode/kd_tree.h
+        yourcode/Others.h
+        yourcode/polypartition.cpp
+        yourcode/polypartition.h
+        yourcode/RTree.h
         yourcode/submit-1AddPolygonBeforeQueryPoint.cpp
         yourcode/submit-1AddPolygonBeforeQueryPoint.h
         yourcode/submit-2AddPointBeforeQueryPolygon.cpp
@@ -19,4 +29,5 @@ add_executable(main
         yourcode/submit-5MixQueryPolygon.h
         yourcode/submit-6MixQuery.cpp
         yourcode/submit-6MixQuery.h
-        main.cpp yourcode/all.h yourcode/Others.h yourcode/all.cpp)
+        main.cpp yourcode/Triangle.h yourcode/Others.cpp yourcode/Triangle.cpp yourcode/quadtrees.h)
+

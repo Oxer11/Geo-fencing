@@ -191,7 +191,7 @@ int main() {
     std::fstream fout("test.out", std::fstream::out);
 
     fin >> environment_variable;
-    //environment_variable = 5;
+    
     switch (environment_variable) {
         case 1: {
             SetEnvironmentFromAddPolygonBeforeQueryPoint();
@@ -222,10 +222,9 @@ int main() {
     }
 
     int user_operation(0);
-    int cnt = 0;
+
     while (fin >> user_operation) {
-        cnt++;if (cnt % 1000 == 0) std::cout<<cnt<<std::endl;
-        //std::cout<<cnt<<std::endl;
+        
         switch (user_operation) {
             case 1: {
                 // Add Point
