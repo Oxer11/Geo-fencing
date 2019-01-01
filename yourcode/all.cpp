@@ -12,6 +12,8 @@ unordered_map<int, Rect> RPoly;
 unordered_map<int, vector<pair<double, double>>> Poly;
 vector<int> ansid, ans;
 double pgon[150][2];
+vector<pair<double, double> > Point;
+vector<int> Point_id;
 
 bool MySearchCallback(int id)
 {
