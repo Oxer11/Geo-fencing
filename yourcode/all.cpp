@@ -5,22 +5,18 @@
 #include "all.h"
 
 RTree<int, double, 2, double> Rtree_point;
+unordered_map<int, pair<double, double>> RPoint;
+
 RTree<int, double, 2, double> Rtree;
-kdtree KDtree;
-TPPLPartition pp;
-quadtrees Qtree;
+unordered_map<int, Rect> RPoly;
+unordered_map<int, vector<pair<double, double>>> Poly;
+vector<int> ansid, ans;
+double pgon[150][2];
 
 bool MySearchCallback(int id)
 {
     ansid.push_back(id);
-    return true; // keep going
-}
-
-bool MySearchCallbackTri(int id)
-{
-    pair<double, double> x = RPoint[id];
-    if (PointInTriangle(x.first, x.second, TRI))
-      ans_id[id] = 1;
+    //printf("Hit data rect %d\n", id);
     return true; // keep going
 }
 
@@ -50,7 +46,3 @@ bool rayCasting(double px, double py, vector<pair<double, double>> &polygon)
     // 射线穿过多边形边界的次数为奇数时点在多边形内
     return flag;
 }
-
-
-
-
