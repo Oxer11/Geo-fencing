@@ -30,6 +30,7 @@ extern GridSet PolyGrid[15010];
 extern pair<double, double> Point[150010];
 extern int Point_id[150010];
 extern int Poly_id[15010];
+extern bool Poly_is_setup[15010];
 extern int Poly_cnt, Point_cnt;
 
 bool MySearchCallback(int id);

@@ -18,6 +18,7 @@ GridSet PolyGrid[15010];
 pair<double, double> Point[150010];
 int Point_id[150010];
 int Poly_id[15010];
+bool Poly_is_setup[15010];
 int Poly_cnt, Point_cnt;
 
 bool MySearchCallback(int id)
