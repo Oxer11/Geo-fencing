@@ -6,33 +6,25 @@ void SetEnvironmentFromMixQueryPoint() {
 }
 
 std::vector<int> QueryPointFromMixQueryPoint(double x, double y) {
-    ansid.clear();
     ans.clear();
-    Rect search_rect(x, y, x, y);
-    Rtree.Search(search_rect.min, search_rect.max, MySearchCallback);
-    for (auto nowid : ansid)
-        if (rayCasting(x, y, Poly[nowid]))
-            ans.push_back(nowid);
-    return ans;}
+    double point[2];
+    point[0] = x, point[1] = y;
+    for (int i = 0; i < Poly_cnt; i++)
+        if (GridTest(&PolyGrid[i], point))
+            if (!is_erase_Poly[Poly_id[i]])
+            ans.push_back(Poly_id[i]);
+    return ans;
+}
 
 void AddPolygonFromMixQueryPoint(int id, int n, std::vector<std::pair<double, double> > &polygon) {
-    double mnx = MAX_POS, mny = MAX_POS, mxx = -MAX_POS, mxy = -MAX_POS;
-    for (auto now : polygon)
-    {
-        if (now.first < mnx) mnx = now.first;
-        if (now.second < mny) mny = now.second;
-        if (now.first > mxx) mxx = now.first;
-        if (now.second > mxy) mxy = now.second;
-    }
-    Rect R = Rect(mnx, mny, mxx, mxy);
-    RPoly[id] = R;
-    Poly[id] = polygon;
-    Rtree.Insert(R.min, R.max, id);
+    for (int i = 0; i < n; i++)
+        pgon[i][0] = polygon[i].first,
+        pgon[i][1] = polygon[i].second;
+    GridSetup(pgon, n, Grid_Resolution, &PolyGrid[Poly_cnt]);
+    Poly_id[Poly_cnt] = id;
+    Poly_cnt ++;
 }
 
 void DeletePolygonFromMixQueryPoint(int id) {
-    Rect R = RPoly[id];
-    Rtree.Remove(R.min, R.max, id);
-    RPoly.erase(id);
-    Poly.erase(id);
+    is_erase_Poly[id] = 1;
 }

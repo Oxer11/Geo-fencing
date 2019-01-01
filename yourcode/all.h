@@ -24,8 +24,13 @@ extern unordered_map<int, Rect> RPoly;
 extern unordered_map<int, vector<pair<double, double>>> Poly;
 extern vector<int> ansid, ans;
 extern double pgon[150][2];
-extern vector<pair<double, double> > Point;
-extern vector<int> Point_id;
+extern unordered_map<int, bool> is_erase_Point;
+extern unordered_map<int, bool> is_erase_Poly;
+extern GridSet PolyGrid[15010];
+extern pair<double, double> Point[150010];
+extern int Point_id[150010];
+extern int Poly_id[15010];
+extern int Poly_cnt, Point_cnt;
 
 bool MySearchCallback(int id);
 

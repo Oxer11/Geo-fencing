@@ -210,7 +210,7 @@ void TrapBound(int j, int count, double vx0, double vx1, pTrapezoidSet p_trap_se
 int CompareEdges(const void* uu, const void* vv);
 void	TrapezoidSetup(double pgon[][2], int numverts, int bins, pTrapezoidSet p_trap_set );
 
-void GridSetup(double pgon[][2], int	numverts, int resolution, pGridSet p_gs) ;
+void GridSetup(double pgon[][2], int numverts, int resolution, pGridSet p_gs) ;
 int AddGridRecAlloc(pGridCell p_gc, double xa, double ya, double xb, double yb, double eps);
 void GridCleanup(pGridSet p_gs);
 
