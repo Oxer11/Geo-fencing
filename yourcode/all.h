@@ -27,6 +27,7 @@ extern double pgon[150][2];
 extern unordered_map<int, bool> is_erase_Point;
 extern unordered_map<int, bool> is_erase_Poly;
 extern GridSet PolyGrid[15010];
+extern TrapezoidSet PolyTrap[15010];
 extern pair<double, double> Point[150010];
 extern int Point_id[150010];
 extern int Poly_id[15010];

@@ -39,7 +39,7 @@ void AddPolygonFromAddPolygonBeforeQueryPoint(int id, int n, std::vector<std::pa
     for (int i = 0; i < n; i++)
         pgon[i][0] = polygon[i].first,
         pgon[i][1] = polygon[i].second;
-    GridSetup(pgon, n, Grid_Resolution, &PolyGrid[Poly_cnt]);
+    GridSetup(pgon, n, 20, &PolyGrid[Poly_cnt]);
     Poly_id[Poly_cnt] = id;
     Poly_cnt ++;
 }
