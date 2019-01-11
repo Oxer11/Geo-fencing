@@ -5,26 +5,35 @@
 #ifndef PJ_ALL_H
 #define PJ_ALL_H
 
+#include "Others.h"
 #include "RTree.h"
-#include "polypartition.h"
-#include "kd_tree.h"
-#include "quadtrees.h"
+#include "ptinpoly.h"
 #include<cmath>
 #include<vector>
 #include<unordered_map>
-#include<stack>
+#define MAX_POS 5000000
+#define Grid_Resolution 100
+#define mod 1000007
 
 using namespace std;
 
 extern RTree<int, double, 2, double> Rtree_point;
+extern unordered_map<int, pair<double, double>> RPoint;
+
 extern RTree<int, double, 2, double> Rtree;
-extern kdtree KDtree;
-extern TPPLPartition pp;
-extern quadtrees Qtree;
+extern unordered_map<int, Rect> RPoly;
+extern unordered_map<int, vector<pair<double, double>>> Poly;
+extern vector<int> ansid, ans;
+extern double pgon[150][2];
+extern bool is_erase_Point[mod];
+extern bool is_erase_Poly[mod];
+extern GridSet PolyGrid[15010];
+extern pair<double, double> Point[150010];
+extern int Point_id[150010];
+extern int Poly_id[15010];
+extern int Poly_cnt, Point_cnt;
 
 bool MySearchCallback(int id);
-
-bool MySearchCallbackTri(int id);
 
 bool rayCasting(double px, double py, vector<pair<double, double>> &polygon);
 
