@@ -1,6 +1,6 @@
 # Geo-fencing
 ![grid](README.asset/GeoFence.png)
-<center><font size="1">This figure is from https://www.propellant.media/geofencing-marketing-company-providers/.</font></center>
+<p style="font-size:10px;text-align:center;">This figure is from https://www.propellant.media/geofencing-marketing-company-providers/.</p>
 
 
 Geo-fencing Project for *Data Structure* 2018 Fall @ Fudan University, by [**Zuobai Zhang**](<https://oxer11.github.io/>)
