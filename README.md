@@ -1,7 +1,5 @@
 # Geo-fencing
-![grid](README.asset/GeoFence.png)
-<p style="font-size:10px;text-align:center;">This figure is from https://www.propellant.media/geofencing-marketing-company-providers/.</p>
-
+[![grid](README.asset/GeoFence.png)](https://www.propellant.media/geofencing-marketing-company-providers/)
 
 Geo-fencing Project for *Data Structure* 2018 Fall @ Fudan University, by [**Zuobai Zhang**](<https://oxer11.github.io/>)
 
@@ -26,7 +24,7 @@ From an abstract perspective, it is equivalent to the following problem. Given a
 The scale of final test  data is listed in the following table:
 
 |  | 1 | 2 | 3 | 4 | 5 | 6 |
-| ---- | ---- | ---- | ---- | ---- | ---- | ----- |
+| ---- | :---- | :---- | :---- | :---- | :---- | :----- |
 |case_1|0|0|2000|15000|0|0|
 |case_2|150000|0|0|0|0|200|
 |case_3|100000|0|500|5000|0|300|
@@ -34,23 +32,33 @@ The scale of final test  data is listed in the following table:
 |case_5|150000|20000|0|0|0|200|
 |case_6|100000|10000|300|5000|500|300|
 
+## Methods
 
-## Problem Analysis
+To address this problem, four solutions are proposed aiming to reduce the time cost.
 
-### Spatial Indexing Data Structure
+### Alg. 1: R-tree + Brute-Force
 
-### Point in Polygon Strategies
+[R-tree](https://en.wikipedia.org/wiki/R-tree) is a tree data structure used for storing spatial data indexes in an efficient manner. R-trees are highly useful for spatial data queries and storage, especially for processing rectangles. 
 
-## Solutions
+In this problem, we combine R-tree and ray-method to derive a brute-force solution. For operation 1, 2, 6, we treat points as small rectangles and then put them into R-tree via corresponding operations. And for operation 3, 4, 5, we approximate polygons with their bounding rectangles. In this way, all operations about points and polygons are transformed to rectangle operations in R-tree. For query 3, we first select those rectangles intersecting with query one and then apply ray-method to check whether the point locates in the polygons.
 
-### R-tree + Brute-Force
+In spite of the outstanding performance on the test dataset, Alg. 1 suffers from approximate deviation seriously. More specifically, the time complexity of Alg. 1 are not guaranteed when bounding rectangles cannot approximate polygons accurately, as is common for non-convex polygons.
 
-### k-d tree + Triangulation
+### Alg. 2: k-d tree + Triangulation
 
-### Quadtree + Triangulation
+The bottleneck of Alg. 1 is the ray-method, which implies that a more efficient strategies for 'point in polygon' is needed to accelerate the algorithm. Triangulation gives a natural solution to this problem. According to https://github.com/ivanfratric/polypartition, we can partition a non-convex polygons into triangles in $O(n log n)$ time. In total, we will obtain numerous triangles, the number of which is about the same as the number of edges of all polygons.
 
-### Grid Method + Brute-Force
+To maintain the information of points efficiently, [k-d tree](https://en.wikipedia.org/wiki/K-d_tree) is the best choice. A k-d Tree(also called as k-dimensional Tree) is a binary search tree where data in each node is a k-dimensional point in space. In short, it is a space partitioning data structure for organizing points in a k-dimensional space. With the primary objective of accelerating point processing, for each tree node, we maintain the bounding rectangles of its subtree. If a query triangle has no intersect with the bounding rectangles, we can simply avoid the query in the subtree.
+
+Though with a strict theoretical time complexity guarantee, Alg. 2 performs nearly the same as Alg. 1 in practice. The main reason is that there are only 150 edges in each polygons in test dataset. Our experiments show that Alg. 2 outperforms other solutions when the number of polygon edges is extremely high.
+
+### Alg. 3: Quadtree + Triangulation
+
+### Alg. 4: Grid Method + Brute-Force
 
 ## Conclusion
 
 ## Acknowledgments
+
+- Thanks to the teaching assistants for revising our work.
+- Thanks to my classmate [**Chenhao Wang**](https://github.com/wch19990119) for his helpful discussion with me.
